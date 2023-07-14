@@ -26,93 +26,76 @@ import kotlin.text.Regex;
 public class PasswordValidationView extends LinearLayout {
 
 
-
-
-// Core Items/
-    private Context mContext;
+    // Core Items/
+    private final Context mContext;
     private AttributeSet attrs;
     private int styleAttr;
     private View view;
 
-    EditText passwordEditText;
+    private EditText passwordEditText;
     boolean isLower, isUpper, isDigit, isSpecialChar, isLengthy;
     OnValidationListener onValidationListener;
 
-    Boolean isPasswordValid  = false;
+    Boolean isPasswordValid = false;
 
     Pattern pattern;
 
     // specialCharRegex  = Regex("[!\"#\$%&'()*+,-./:;<=>?@[\\]^_`{|}~]]");
-    TextView lowerCaseSymbol, lowerCaseTv, upperCaseSymbol, upperCaseTv, digitsSymbol, digitsTv, lengthSymbol, lengthTv
-            , specialCharSymbol, specialCharTv ;
+    TextView lowerCaseSymbol, lowerCaseTv, upperCaseSymbol, upperCaseTv, digitsSymbol, digitsTv, lengthSymbol, lengthTv, specialCharSymbol, specialCharTv;
 
 
     int gray, enabledColor;
-    public PasswordValidationView (Context context){
+
+    public PasswordValidationView(Context context) {
         super(context);
         this.mContext = context;
         initView();
     }
 
-    public PasswordValidationView (Context context, AttributeSet attrs){
-        super(context,attrs);
+    public PasswordValidationView(Context context, AttributeSet attrs) {
+        super(context, attrs);
         this.mContext = context;
         this.attrs = attrs;
         initView();
     }
-    public PasswordValidationView (Context context,AttributeSet attrs, int styleAttr){
-        super(context,attrs,styleAttr);
+
+    public PasswordValidationView(Context context, AttributeSet attrs, int styleAttr) {
+        super(context, attrs, styleAttr);
         this.mContext = context;
         this.attrs = attrs;
         this.styleAttr = styleAttr;
         initView();
     }
 
-    private void initView(){
-        gray  = ContextCompat.getColor(mContext, R.color.gray);
-        enabledColor   = ContextCompat.getColor(mContext, R.color.colorPrimary);
-       pattern =  Pattern.compile("[^a-zA-Z0-9]");
-
-      this.view = this;
-      LayoutInflater.from(mContext).inflate(R.layout.password_validation_view, this);
-
-       isLower = false;
-       isUpper = false;
-       isDigit = false;
-       isSpecialChar = false;
-       isLengthy = false;
-
-       findViews();
+    private void initView() {
 
 
-       passwordEditText.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        this.view = this;
+        inflate(mContext, R.layout.password_validation_view, this);
 
-           }
+        isLower = false;
+        isUpper = false;
+        isDigit = false;
+        isSpecialChar = false;
+        isLengthy = false;
 
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
-               validatePassword(s.toString());
-               checkValidation(s.toString());
-           }
+        gray = ContextCompat.getColor(mContext, R.color.gray);
+        enabledColor = ContextCompat.getColor(mContext, R.color.colorPrimary);
+        pattern = Pattern.compile("[^a-zA-Z0-9]");
 
-           @Override
-           public void afterTextChanged(Editable s) {
+        findViews();
 
-           }
-       });
 
     }
 
     private void findViews() {
-       lowerCaseSymbol = findViewById(R.id.lower_case_symbol);
-       lowerCaseTv = findViewById(R.id.lower_case_tv);
+        lowerCaseSymbol = findViewById(R.id.lower_case_symbol);
+        lowerCaseTv = findViewById(R.id.lower_case_tv);
 
-       upperCaseSymbol = findViewById(R.id.upper_case_symbol);
-       upperCaseTv = findViewById(R.id.upper_case_tv);
+        upperCaseSymbol = findViewById(R.id.upper_case_symbol);
+        upperCaseTv = findViewById(R.id.upper_case_tv);
 
-       digitsSymbol = findViewById(R.id.digits_symbol);
+        digitsSymbol = findViewById(R.id.digits_symbol);
         digitsTv = findViewById(R.id.digits_tv);
 
         lengthSymbol = findViewById(R.id.length_symbol);
@@ -122,15 +105,34 @@ public class PasswordValidationView extends LinearLayout {
         specialCharTv = findViewById(R.id.special_char_tv);
     }
 
-    public void setOnValidationListener ( OnValidationListener listener) {
+    public void setOnValidationListener(OnValidationListener listener) {
         this.onValidationListener = listener;
     }
-    public void setPasswordEditText(EditText editText){
+
+    public void setPasswordEditText(EditText editText) {
         this.passwordEditText = editText;
+
+        passwordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                validatePassword(s.toString());
+                checkValidation(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
 
-    private void validatePassword(String string){
+    private void validatePassword(String string) {
         if (!string.isEmpty() || string.chars().anyMatch(Character::isLowerCase)) {
             //lowercase
             lowerCaseSymbol.setTextColor(gray);
@@ -169,9 +171,31 @@ public class PasswordValidationView extends LinearLayout {
 
             isSpecialChar = false;
         }
-        if (string.chars().anyMatch(Character::isLowerCase)) {
+
+        if (string.isEmpty()) {
             lowerCaseSymbol.setTextColor(gray);
             lowerCaseTv.setTextColor(gray);
+            upperCaseSymbol.setTextColor(gray);
+            upperCaseTv.setTextColor(gray);
+            digitsSymbol.setTextColor(gray);
+            digitsTv.setTextColor(gray);
+            digitsSymbol.setTextColor(gray);
+            digitsTv.setTextColor(gray);
+            lengthSymbol.setTextColor(gray);
+            lengthTv.setTextColor(gray);
+            specialCharSymbol.setTextColor(gray);
+            specialCharTv.setTextColor(gray);
+
+            isUpper = false;
+            isSpecialChar = false;
+            isLower = false;
+            isLengthy = false;
+            isDigit = false;
+        }
+
+        if (string.chars().anyMatch(Character::isLowerCase)) {
+            lowerCaseSymbol.setTextColor(enabledColor);
+            lowerCaseTv.setTextColor(enabledColor);
 
             if (!isLower) {
                 animateSymbol(lowerCaseSymbol);
@@ -218,7 +242,7 @@ public class PasswordValidationView extends LinearLayout {
 
     }
 
-    private void animateSymbol(View view ) {
+    private void animateSymbol(View view) {
         YoYo.with(Techniques.Tada)
                 .duration(900)
                 .playOn(view);
@@ -233,9 +257,6 @@ public class PasswordValidationView extends LinearLayout {
                 && isSpecialChar);
         this.onValidationListener.onUpdate(isPasswordValid);
     }
-
-
-
 
 
 }
