@@ -3,6 +3,10 @@
 
 This is A UI component that checks if a new password answers all the requirements for a legit passcode. 
 
+## Demo 
+<p align="center">
+<img src="https://github.com/osnatlevi/PasswordValidationView_Pro/assets/62397127/9bd74f4b-7bbf-47ee-80f7-623298143356" alt="demo"  width="300" />
+</p>
 
 # Screenshots
 >| | | |
