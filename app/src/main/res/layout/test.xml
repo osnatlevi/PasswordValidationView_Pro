@@ -27,14 +27,12 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:layout_margin="20dp" />
-
         <com.example.pvv_sdk.PasswordValidationView
-            android:id="@+id/pvvt"
+
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"/>
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <Button
         android:id="@+id/btn"
